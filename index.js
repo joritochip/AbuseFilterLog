@@ -41,6 +41,9 @@ client.logIn((err, user) => {
                     filterTimestamp = Math.floor(new Date(hits[hits.length - 1].timestamp).getTime() / 1000) + 1;
                     
                     hits.forEach(hit => {
+                        const { filter_id, filter, timestamp, user, title, revid, id } = hit;
+                        const { old_size, new_size } = hit.details;
+
                         let details = resultMap.get("DEFAULT");
 
                         resultMap.forEach((val, key) => {
@@ -49,29 +52,29 @@ client.logIn((err, user) => {
                             }
                         });
 
-                        let payload = {
+                        const payload = {
                             embeds: [
                                 {
                                     title: details.TITLE,
                                     color: Number(`0x${details.COLOR}`),
-                                    description: `Hit on filter #${hit.filter_id} (${hit.filter})`,
-                                    timestamp: hit.timestamp,
+                                    description: `Hit on filter #${filter_id} (${filter})`,
+                                    timestamp: timestamp,
                                     fields: [
                                         {
                                             name: "User",
-                                            value: `[${hit.user}](${indexPath}?title=User:${hit.user})`,
+                                            value: `[${user}](${indexPath}?title=User:${user.replace(/ /g, '_')})`,
                                             inline: true
                                         },
                                         {
                                             name: "Page",
-                                            value: `[${hit.title}](${indexPath}?title=${hit.title}) ${hit.revid ? ` ([diff](${indexPath}?title=Special:Diff/${hit.revid}))` : ''}`,
+                                            value: `[${title}](${indexPath}?title=${title.replace(/ /g, '_')}) ${revid ? ` ([diff](${indexPath}?title=Special:Diff/${revid}))` : ''}`,
                                             inline: true
                                         },
-                                        ...(hit.details.new_size ? {
+                                        ...(new_size ? [{
                                             name: "Page Size",
-                                            value: `${hit.details.old_size} > ${hit.details.new_size} **(${hit.details.new_size > hit.details.old_size ? '+' : '-'}${Math.abs(hit.details.new_size - hit.details.old_size)})**`,
+                                            value: `${old_size} -> ${new_size} **(${Number(new_size) > Number(old_size) ? '+' : ''}${Number(new_size) - Number(old_size)})**`,
                                             inline: true
-                                        } : [])
+                                        }] : [])
                                     ]
                                 }
                             ],
@@ -83,13 +86,13 @@ client.logIn((err, user) => {
                                             "type": 2,
                                             "label": "Details",
                                             "style": 5,
-                                            "url": `${indexPath}?title=Special:AbuseLog/${hit.id}`
+                                            "url": `${indexPath}?title=Special:AbuseLog/${id}`
                                         },
                                         {
                                             "type": 2,
                                             "label": "Examine",
                                             "style": 5,
-                                            "url": `${indexPath}?title=Special:AbuseFilter/examine/log/${hit.id}`
+                                            "url": `${indexPath}?title=Special:AbuseFilter/examine/log/${id}`
                                         }
                                     ]
                                 }
