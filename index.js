@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const config = require('./config.json');
 
 const resultMap = new Map(Object.entries(config.RESULT_MAP));
-const indexPath = `${config.protocol}://${config.WIKI_DOMAIN}${config.API_PATH}index.php`;
+const indexPath = `${config.PROTOCOL}://${config.WIKI_DOMAIN}${config.API_PATH}index.php`;
 
 const client = new nodemw({
     protocol: config.PROTOCOL,
@@ -15,8 +15,8 @@ const client = new nodemw({
 });
 
 client.logIn((err, user) => {
-    if (err) return console.info(err);
-    if (user.result !== 'Success') return console.info('Unable to login');
+    if (err) throw err;
+    if (user.result !== 'Success') throw new Error('Unable to login');
 
     console.log(`Logged in as ${user.lgusername}`);
 
@@ -41,8 +41,6 @@ client.logIn((err, user) => {
                     enumerateAt = Math.floor(new Date(hits[hits.length - 1].timestamp).getTime() / 1000) + 1;
                     
                     hits.forEach(hit => {
-                        console.log(`Hit on filter ${hit.filter_id} from user ${hit.user}`);
-
                         let details = resultMap.get("DEFAULT");
 
                         resultMap.forEach((val, key) => {
@@ -98,8 +96,6 @@ client.logIn((err, user) => {
                             ]
                         };
 
-                        console.log(JSON.stringify(payload));
-
                         fetch(config.WEBHOOK_URL, {
                             method: 'post',
                             body: JSON.stringify(payload),
@@ -113,6 +109,5 @@ client.logIn((err, user) => {
                 }
             }
         )
-        
     }, config.POLL_INTERVAL);
 });
