@@ -20,7 +20,7 @@ client.logIn((err, user) => {
 
     console.log(`Logged in as ${user.lgusername}`);
 
-    let enumerateAt = new Date("2021-08-30T04:13:09Z").getTime() / 1000;//Math.floor(Date.now() / 1000);
+    let filterTimestamp = Math.floor(Date.now() / 1000);
 
     setInterval(() => {
         client.api.call(
@@ -30,7 +30,7 @@ client.logIn((err, user) => {
                 afllimit: 15,
                 aflprop: 'ids|filter|user|title|action|details|result|timestamp|hidden|revid',
                 afldir: 'newer',
-                aflstart: enumerateAt
+                aflstart: filterTimestamp
             },
             (err, res) => {
                 if (err) return console.info(err);
@@ -38,7 +38,7 @@ client.logIn((err, user) => {
                 const hits = res.abuselog;
 
                 if (hits.length) {
-                    enumerateAt = Math.floor(new Date(hits[hits.length - 1].timestamp).getTime() / 1000) + 1;
+                    filterTimestamp = Math.floor(new Date(hits[hits.length - 1].timestamp).getTime() / 1000) + 1;
                     
                     hits.forEach(hit => {
                         let details = resultMap.get("DEFAULT");
@@ -105,7 +105,7 @@ client.logIn((err, user) => {
                         }).catch(console.info);
                     })
                 } else {
-                    enumerateAt = Math.floor(Date.now() / 1000);
+                    filterTimestamp = Math.floor(Date.now() / 1000);
                 }
             }
         )
