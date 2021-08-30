@@ -1,0 +1,34 @@
+{
+    "PROTOCOL": "https",
+    "WIKI_DOMAIN": "roblox.fandom.com",
+    "API_PATH": "/",
+
+    "USERNAME": "MediaWiki username here",
+    "PASSWORD": "MediaWiki password here",
+
+    "POLL_INTERVAL": 5000,
+    "WEBHOOK_URL": "Discord webhook URL (buttons will only appear if webhook is created by a bot)",
+
+    "RESULT_MAP": {
+        "TAG": {
+            "TITLE": "🏷️ Edit tagged",
+            "COLOR": "0000ff"
+        },
+        "WARN": {
+            "TITLE": "⚠️ Edit triggered warn",
+            "COLOR": "ffff00"
+        },
+        "DISALLOW": {
+            "TITLE": "❌ Edit disallowed",
+            "COLOR": "ff0000"
+        },
+        "BLOCK": {
+            "TITLE": "🔨 Edit triggered block",
+            "COLOR": "000000"
+        },
+        "DEFAULT": {
+            "TITLE": "Edit hit abuse filter",
+            "COLOR": "bbbbbb"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "abusefilterlog",
+  "version": "1.0.0",
+  "description": "Logs MediaWiki Abuse Filter hits to a Discord webhook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "joritochip",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "nodemw": "^0.14.0"
+  }
+}
